@@ -1,1 +1,1 @@
-# SEObooster
+# Magona Algorithm for Boost SEO
