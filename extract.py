@@ -2,6 +2,7 @@ import os
 import numpy as np
 import pandas as pd
 import re
+import random
 from collections import Counter
 
 product=pd.read_excel('product.xlsx')
@@ -66,16 +67,27 @@ class Product:
             return "Santé et beauté > Hygiène personnelle > Soin des cheveux"
     def procTags(self):
         list_of_tags=[]
+        no_keywords=["de","Eau","pour","+","Homme","Femme"]
         liste_type=self.typeproducte().split(">")
         for i in liste_type:                
             list_of_tags.append(i)
         list_of_tags.append(self.brand)
+        print(self.title,type(self.title))
+        title_list=list(filter(None,re.split("[ -]",self.title)))
+        for k in title_list:
+            if random.randint(0,1):
+                list_of_tags.append(k)
+        list_of_tags.append(["Parfum pour Homme","Parfum pour Femme","Parfum Unisex"][2 if ("mixte" or "Mixte" in title_list) else ("Femme" or "femme" in title_list)])
+        for i in no_keywords:
+            if i in list_of_tags:
+                list_of_tags.remove(i)
+        
         return list_of_tags
-def procUselessKeyword():
+def procAllKeyword():
         l=[]
         for i in product_nbr:
             for k in list(filter(None,re.split("[ -]",Product(i).title))):
                 l.append(k)
         return Counter(l)
-procUselessKeyword()
+list_of_keyword=procAllKeyword()
     
